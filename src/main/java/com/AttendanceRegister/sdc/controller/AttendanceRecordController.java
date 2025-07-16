@@ -3,15 +3,7 @@ package com.AttendanceRegister.sdc.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.AttendanceRegister.sdc.model.AttendanceRecord;
 import com.AttendanceRegister.sdc.service.AttendanceRecordService;
@@ -26,14 +18,16 @@ public class AttendanceRecordController {
         this.attendanceService = attendanceService;
     }
 
-    // ✅ Add a new attendance record
+    // ✅ Add a new attendance record with classNumber
     @PostMapping("/add")
     public ResponseEntity<AttendanceRecord> addRecord(
             @RequestParam Long userId,
             @RequestParam Long subjectId,
             @RequestParam String status,
-            @RequestParam String date) {
-        AttendanceRecord record = attendanceService.addRecord(userId, subjectId, status, date);
+            @RequestParam String date,
+            @RequestParam int classNumber) {
+
+        AttendanceRecord record = attendanceService.addRecord(userId, subjectId, status, date, classNumber);
         return ResponseEntity.ok(record);
     }
 
@@ -53,10 +47,23 @@ public class AttendanceRecordController {
         return ResponseEntity.ok(record);
     }
 
-    // ✅ Delete a specific attendance record
+    // ✅ Delete a specific attendance record by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecord(@PathVariable Long id) {
         attendanceService.deleteRecord(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ✅ Delete records by subject, date, and class number
+    @DeleteMapping("/delete-by-subject-date-class")
+    public ResponseEntity<String> deleteBySubjectDateClass(
+            @RequestParam Long subjectId,
+            @RequestParam String date,
+            @RequestParam int classNumber) {
+
+        attendanceService.deleteBySubjectDateAndClassNumber(subjectId, date, classNumber);
+        return ResponseEntity.ok("Records deleted for Subject ID: " + subjectId +
+                                 ", Date: " + date +
+                                 ", Class Number: " + classNumber);
     }
 }

@@ -1,12 +1,6 @@
 package com.AttendanceRegister.sdc.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "attendance_table")
@@ -20,6 +14,9 @@ public class AttendanceRecord {
 
     private String date;
 
+    // ✅ New field to track multiple classes per day
+    private int classNumber;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -31,9 +28,10 @@ public class AttendanceRecord {
     // 👉 Constructors
     public AttendanceRecord() {}
 
-    public AttendanceRecord(String status, String date, User user, Subject subject) {
+    public AttendanceRecord(String status, String date, int classNumber, User user, Subject subject) {
         this.status = status;
         this.date = date;
+        this.classNumber = classNumber;
         this.user = user;
         this.subject = subject;
     }
@@ -63,6 +61,14 @@ public class AttendanceRecord {
         this.date = date;
     }
 
+    public int getClassNumber() {
+        return classNumber;
+    }
+
+    public void setClassNumber(int classNumber) {
+        this.classNumber = classNumber;
+    }
+
     public User getUser() {
         return user;
     }
@@ -85,6 +91,7 @@ public class AttendanceRecord {
                 "id=" + id +
                 ", status='" + status + '\'' +
                 ", date='" + date + '\'' +
+                ", classNumber=" + classNumber +
                 ", userId=" + (user != null ? user.getId() : null) +
                 ", subjectId=" + (subject != null ? subject.getId() : null) +
                 '}';
