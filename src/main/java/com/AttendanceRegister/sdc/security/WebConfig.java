@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // ✅ Correct: allow all routes
-                .allowedOrigins("https://attendanceinhand1.netlify.app") // ✅ No trailing slash
+                .allowedOrigins("https://magnificent-chimera-753412.netlify.app") // ✅ No trailing slash
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
