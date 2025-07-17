@@ -28,7 +28,7 @@ public class AttendanceRecordService {
         this.subjectRepository = subjectRepository;
     }
 
-    // ✅ Add a new attendance record (with classNumber)
+ // ✅ Add a new attendance record (with classNumber)
     public AttendanceRecord addRecord(Long userId, Long subjectId, String status, String date, int classNumber) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
@@ -36,15 +36,16 @@ public class AttendanceRecordService {
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new RuntimeException("Subject not found with ID: " + subjectId));
 
-        // ✅ Prevent duplicate submission
-        boolean exists = attendanceRecordRepository.existsByUserAndSubjectAndDateAndClassNumber(user, subject, date, classNumber);
-        if (exists) {
-            throw new RuntimeException("Attendance already submitted for this class number.");
-        }
+        // ❌ Remove duplicate check
+        // boolean exists = attendanceRecordRepository.existsByUserAndSubjectAndDateAndClassNumber(user, subject, date, classNumber);
+        // if (exists) {
+        //     throw new RuntimeException("Attendance already submitted for this class number.");
+        // }
 
         AttendanceRecord record = new AttendanceRecord(status, date, classNumber, user, subject);
         return attendanceRecordRepository.save(record);
     }
+
 
     // ✅ Get all attendance records for a user
     public List<AttendanceRecord> getRecordsByUser(Long userId) {
