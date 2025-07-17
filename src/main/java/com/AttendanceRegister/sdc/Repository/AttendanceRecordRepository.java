@@ -12,5 +12,6 @@ public interface AttendanceRecordRepository extends JpaRepository<AttendanceReco
     List<AttendanceRecord> findByUserId(Long userId);
     boolean existsByUserAndSubjectAndDateAndClassNumber(User user, Subject subject, String date, int classNumber);
     void deleteBySubjectIdAndDateAndClassNumber(Long subjectId, String date, int classNumber);
+    void deleteBySubjectIdAndUserId(Long subjectId, Long userId);
 
 }
